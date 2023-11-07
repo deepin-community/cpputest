@@ -1,0 +1,2 @@
+# git replaces line endings which then differs from .orig.tar.gz
+extend-diff-ignore = (^|/)platforms/Dos/ALLTESTS.BAT

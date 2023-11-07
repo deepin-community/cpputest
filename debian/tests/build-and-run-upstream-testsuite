@@ -1,0 +1,33 @@
+#!/bin/sh
+
+set -e
+
+cp -a tests $AUTOPKGTEST_TMP
+cd $AUTOPKGTEST_TMP/tests
+
+CFLAGS=$(pkg-config --cflags cpputest)
+LDFLAGS=$(pkg-config --libs cpputest)
+
+build_and_run() {
+    for file in *.c; do
+	echo "Building $file"
+	gcc $CFLAGS -c $file -o ${file%%.c}.o
+    done
+    for file in *.cpp; do
+	echo "Building $file"
+	g++ $CFLAGS -c $file -o ${file%%.cpp}.o
+    done
+    echo "Building run-tests"
+    g++ -o run-tests *.o $LDFLAGS
+    echo "Running the tests"
+    ./run-tests
+}
+
+echo "Testing CppUTest"
+cd CppUTest
+build_and_run
+cd ..
+
+echo "Testing CppUTestExt"
+cd CppUTestExt
+build_and_run

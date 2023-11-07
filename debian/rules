@@ -2,3 +2,21 @@
 
 %:
 	dh $@
+
+# The build target must not be empty because it's also a real directory
+# (see #888598).
+.PHONY: build
+build:
+	dh $@
+
+override_dh_auto_test:
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+	$(MAKE) tdd
+endif
+
+override_dh_compress:
+	dh_compress -X.cpp
+
+override_dh_fixperms-indep:
+	chmod 755 debian/cpputest/usr/share/cpputest/scripts/NewProject.sh
+	dh_fixperms

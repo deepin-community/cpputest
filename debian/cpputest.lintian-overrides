@@ -1,0 +1,2 @@
+# Documentation for those scripts are fine where they are
+package-contains-documentation-outside-usr-share-doc usr/share/cpputest/scripts/*
